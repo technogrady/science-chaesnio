@@ -39,10 +39,11 @@ var calculateBestMove = function(game) {
     case 2:
       return PosEvalMove(newGameMoves);
     case 3:
-    positionCount = 0;
+      positionCount = 0;
       return MiniMaxRootMove(newGameMoves, searchdepth, game, true);
     case 4:
-      break;
+      positionCount = 0;
+      return MiniMaxABRootMove(newGameMoves, searchdepth, game, true);
     default:
       alert("The Difficulty chosen is not ready yet");
   }
@@ -121,7 +122,65 @@ function MiniMax(depth, game, isMaximisingPlayer) {
     }
     return bestMove;
   }
-};
+}
+
+function MiniMaxABRootMove(MoveList, depth, game, isMaximisingPlayer) {
+  var bestMove = -9999;
+  var bestMoveFound;
+
+  for (var i = 0; i < MoveList.length; i++) {
+    var newGameMove = MoveList[i];
+    game.ugly_move(newGameMove);
+    var value = MiniMaxAB(depth - 1, game, -10000, 10000, !isMaximisingPlayer);
+    game.undo();
+    if (value >= bestMove) {
+      bestMove = value;
+      bestMoveFound = newGameMove;
+    }
+  }
+  return bestMoveFound;
+}
+
+function MiniMaxAB(depth, game, alpha, beta, isMaximisingPlayer) {
+  positionCount++;
+  if (depth === 0) {
+    return -evaluateBoard(game.board());
+  }
+
+  var newGameMoves = game.ugly_moves();
+
+  if (isMaximisingPlayer) {
+    var bestMove = -9999;
+    for (var i = 0; i < newGameMoves.length; i++) {
+      game.ugly_move(newGameMoves[i]);
+      bestMove = Math.max(
+        bestMove,
+        MiniMaxAB(depth - 1, game, alpha, beta, !isMaximisingPlayer)
+      );
+      game.undo();
+      alpha = Math.max(alpha, bestMove);
+      if (beta <= alpha) {
+        return bestMove;
+      }
+    }
+    return bestMove;
+  } else {
+    var bestMove = 9999;
+    for (var i = 0; i < newGameMoves.length; i++) {
+      game.ugly_move(newGameMoves[i]);
+      bestMove = Math.min(
+        bestMove,
+        MiniMaxAB(depth - 1, game, alpha, beta, !isMaximisingPlayer)
+      );
+      game.undo();
+      beta = Math.min(beta, bestMove);
+      if (beta <= alpha) {
+        return bestMove;
+      }
+    }
+    return bestMove;
+  }
+}
 
 var evaluateBoard = function(board) {
   var totalEvaluation = 0;
@@ -181,9 +240,15 @@ var makeBestMove = function() {
 var getBestMove = function(game) {
   if (game.game_over()) {
     alert("Game over");
+    return 0;
+  } else {
+    var d = new Date().getTime();
+    var bestMove = calculateBestMove(game);
+    d = new Date().getTime() - d;
+    document.getElementById("last-time").innerText =
+      "Last adversary move took " + d / 1000 + "s";
+    return bestMove;
   }
-  var bestMove = calculateBestMove(game);
-  return bestMove;
 };
 
 var renderMoveHistory = function(moves) {
