@@ -8,39 +8,52 @@
 <script src="/lib/chess.js"></script>
 </head>
 <!--<base href="http://chessboardjs.com/" />-->
-<body>
+<body class="bg-dark">
   <br>
-    <h3 class="board text-center">Random moves</h3>
+    <h3 class="board mx-auto text-center text-white">Random moves</h3>
   <br>
-<div id="board" class="board"></div>
+  <div class="container">
+    <div class="row">
+  <div class="col-md-3">
+
+      <div class="form-row">
+        <div class="form-group col-md-12 mx-auto">
+          <label for="AILevel" class="text-white">AI Level</label>
+          <select id="AILevel" onchange="chooseDifficulty()" class="form-control">
+            <option selected>1-Easy (Random)</option>
+            <option>2-Medium (PosEval)</option>
+            <option>3-Hard (Minimax)</option>
+            <option>4-Harder (Minimax w/ Alpha-Beta Pruning)</option>
+          </select>
+        </div>
+        </div>
+        
+      <div class="form-row">
+        <div id="search-depth-form" class="form-group col-md-12 mx-auto">
+            <label for="SearchDepth" class="text-white">Search Depth</label>
+            <select id="SearchDepth"  class="form-control">
+              <option selected>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+            </select>
+          </div>
+      </div>
+      <br>
+      <div class="form-row">
+          <button id="resetbtn" type="button" class="btn col-md-11 mx-auto btn-light">Reset Game</button>
+        </div>
+  </div>
+<div id="board" class="col-md-6 px-lg-5 mx-auto board"></div>
 <br>
-<div class="info">
+<div class="info col-md-3">
     <div id="move-history" class="move-history">
 </div>
 <div id="last-time"></div>
-<form>
-  <div class="form-row">
-    <div class="form-group col-md-6 mx-auto">
-      <label for="AILevel">AI Level</label>
-      <select id="AILevel" onchange="chooseDifficulty()" class="form-control">
-        <option selected>1-Easy (Random)</option>
-        <option>2-Medium (PosEval)</option>
-        <option>3-Hard (Minimax)</option>
-        <option>4-Harder (Minimax w/ Alpha-Beta Pruning)</option>
-      </select>
     </div>
-    
-    <div id="search-depth-form" class="form-group col-md-6 mx-auto">
-        <label for="SearchDepth">Search Depth</label>
-        <select id="SearchDepth"  class="form-control">
-          <option selected>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
-      </div>
-  </div>
-</form>
-<p class="board text-center">&copy; tt.exe 2019 </p>
+
+</div>
+<br>
+<p class="mx-auto  text-center text-white">&copy; tt.exe 2019 </p>
 <script src="/board.js"></script>
 </body>

@@ -1,6 +1,5 @@
 .board {
     width: 400px;
-    margin: auto;
 }
 
 .info {
@@ -13,15 +12,6 @@
     overflow-y: scroll;
 }
 
-/*!
- * chessboard.js $version$
- *
- * Copyright 2013 Chris Oakman
- * Released under the MIT license
- * https://github.com/oakmac/chessboardjs/blob/master/LICENSE
- *
- * Date: $date$
- */
 
 /* clearfix */
 .clearfix-7da63 {
@@ -30,7 +20,7 @@
 
 /* board */
 .board-b72b1 {
-  border: 2px solid #404040;
+  border: 8px solid #404040;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
 }
@@ -51,14 +41,14 @@
 
 /* white square */
 .white-1e1d7 {
-  background-color: #f0d9b5;
-  color: #b58863;
+  background-color: #b8c2c3;
+  color: #728081;
 }
 
 /* black square */
 .black-3c85d {
-  background-color: #b58863;
-  color: #f0d9b5;
+  background-color: #728081;
+  color: #b8c2c3;
 }
 
 .piece-417db{
@@ -72,9 +62,9 @@
 
 /* highlighted square */
 .highlight1-32417, .highlight2-9c5d2 {
-  -webkit-box-shadow: inset 0 0 3px 3px yellow;
-  -moz-box-shadow: inset 0 0 3px 3px yellow;
-  box-shadow: inset 0 0 3px 3px yellow;
+  -webkit-box-shadow: inset 0 0 5px 5px #dfb940;
+  -moz-box-shadow: inset 0 0 5px 5px #dfb940;
+  box-shadow: inset 0 0 5px 5px #dfb940;
 }
 
 /* notation */
@@ -91,4 +81,8 @@
 .numeric-fc462 {
   top: 2px;
   left: 2px;
+}
+
+label{
+  font-weight: 600;
 }

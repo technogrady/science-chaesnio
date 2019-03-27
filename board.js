@@ -252,7 +252,7 @@ var getBestMove = function(game) {
 };
 
 var renderMoveHistory = function(moves) {
-  var historyElement = $("#move-history").empty();
+  var historyElement = $("#move-history");
   historyElement.empty();
   for (var i = 0; i < moves.length; i = i + 2) {
     historyElement.append(
@@ -312,9 +312,9 @@ var removeGreySquares = function() {
 var greySquare = function(square) {
   var squareEl = $("#board .square-" + square);
 
-  var background = "#a9a9a9";
+  var background = "#19c2d3";
   if (squareEl.hasClass("black-3c85d") === true) {
-    background = "#696969";
+    background = "#18818b";
   }
 
   squareEl.css("background", background);
@@ -331,3 +331,10 @@ var cfg = {
   onSnapEnd: onSnapEnd
 };
 board = ChessBoard("board", cfg);
+
+$('#resetbtn').on('click', board.start);
+
+document.getElementById("resetbtn").addEventListener("click", function(){ 
+  game = new Chess();
+  $("#move-history").empty();
+});
