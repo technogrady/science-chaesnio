@@ -1,59 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-<title>MiniMaxJs by tt.exe</title>
-<link rel="stylesheet" href="lib/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="/board.css">
-<script src="/lib/jquery-3.3.1.min.js"></script>
-<script src="lib/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
-<script src="/lib/chessboard.js"></script>
-<script src="/lib/chess.js"></script>
+  <title>MiniMaxJs by tt.exe</title>
+  <link rel="stylesheet" href="lib/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/board.css">
+  <script src="/lib/jquery-3.3.1.min.js"></script>
+  <script src="lib/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+  <script src="/lib/chessboard.js"></script>
+  <script src="/lib/chess.js"></script>
 </head>
+
 <!--<base href="http://chessboardjs.com/" />-->
+
 <body class="bg-dark">
   <br>
-    <h3 class="board mx-auto text-center text-white">Random moves</h3>
+  <h3 class="board mx-auto text-center text-white">MiniMaxJs</h3>
   <br>
   <div class="container">
     <div class="row">
-  <div class="col-md-3">
+      <div class="col-md-3">
 
-      <div class="form-row">
-        <div class="form-group col-md-12 mx-auto">
-          <label for="AILevel" class="text-white">AI Level</label>
-          <select id="AILevel" onchange="chooseDifficulty()" class="form-control">
-            <option selected>1-Easy (Random)</option>
-            <option>2-Medium (PosEval)</option>
-            <option>3-Hard (Minimax)</option>
-            <option>4-Harder (Minimax w/ Alpha-Beta Pruning)</option>
-          </select>
+        <div class="form-row">
+          <div class="form-group col-md-12 mx-auto">
+            <label for="AILevel" class="text-white">AI Level</label>
+            <select id="AILevel" onchange="chooseDifficulty()" class="form-control">
+              <option selected>1-Easy (Random)</option>
+              <option>2-Medium (PosEval)</option>
+              <option>3-Hard (Minimax)</option>
+              <option>4-Harder (Minimax w/ Alpha-Beta Pruning)</option>
+            </select>
+          </div>
         </div>
-        </div>
-        
-      <div class="form-row">
-        <div id="search-depth-form" class="form-group col-md-12 mx-auto">
+
+        <div class="form-row">
+          <div id="search-depth-form" class="form-group col-md-12 mx-auto">
             <label for="SearchDepth" class="text-white">Search Depth</label>
-            <select id="SearchDepth"  class="form-control">
+            <select id="SearchDepth" class="form-control">
               <option selected>1</option>
               <option>2</option>
               <option>3</option>
               <option>4</option>
             </select>
           </div>
-      </div>
-      <br>
-      <div class="form-row">
+        </div>
+        <br>
+        <div class="form-row">
           <button id="resetbtn" type="button" class="btn col-md-11 mx-auto btn-light">Reset Game</button>
         </div>
-  </div>
-<div id="board" class="col-md-6 px-lg-5 mx-auto board"></div>
-<br>
-<div class="info col-md-3">
-    <div id="move-history" class="move-history">
-</div>
-<div id="last-time"></div>
+      </div>
+      <div id="board" class="col-md-6 px-lg-5 mx-auto board"></div>
+      <br>
+      <div class="info col-md-3">
+        <div class="card text-white bg-primary mb-3 h-100 " >
+          <div class="card-header font-weight-bold">Move History</div>
+          <div class="card-body">
+
+            <div id="move-history" class="move-history">
+            </div>
+              <hr class="sticky-hr">
+              <div id="last-time">Move a chess piece to begin</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <br>
+    <p class="mx-auto  text-center text-white">&copy; tt.exe 2019 </p>
+
+    <div id="GameOverModel" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="GameOverModel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modal-title" class="modal-title" id="mySmallModalLabel">Small modal</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+          <div id="modal-message" class="mx-2 my-2 text-center"> 
+
+          </div>
+        </div>
+      </div>
     </div>
 
-</div>
-<br>
-<p class="mx-auto  text-center text-white">&copy; tt.exe 2019 </p>
-<script src="/board.js"></script>
+    <script src="/board.js"></script>
 </body>
+
+</html>

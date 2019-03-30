@@ -21,11 +21,10 @@ function chooseDifficulty() {
   } else {
     depthform.style.visibility = "hidden";
   }
-  console.log(selecteddiff);
 }
 
 var positionCount;
-var calculateBestMove = function(game) {
+var calculateBestMove = function (game) {
   var newGameMoves = game.ugly_moves();
   var searchdepth = parseInt(
     $("#SearchDepth")
@@ -182,7 +181,7 @@ function MiniMaxAB(depth, game, alpha, beta, isMaximisingPlayer) {
   }
 }
 
-var evaluateBoard = function(board) {
+var evaluateBoard = function (board) {
   var totalEvaluation = 0;
   for (var i = 0; i < 8; i++) {
     for (var j = 0; j < 8; j++) {
@@ -192,11 +191,11 @@ var evaluateBoard = function(board) {
   return totalEvaluation;
 };
 
-var getPieceValue = function(piece) {
+var getPieceValue = function (piece) {
   if (piece === null) {
     return 0;
   }
-  var getAbsoluteValue = function(piece) {
+  var getAbsoluteValue = function (piece) {
     if (piece.type === "p") {
       return 10;
     } else if (piece.type === "r") {
@@ -217,7 +216,7 @@ var getPieceValue = function(piece) {
   return piece.color === "w" ? absoluteValue : -absoluteValue;
 };
 
-var onDragStart = function(source, piece, position, orientation) {
+var onDragStart = function (source, piece, position, orientation) {
   if (
     game.in_checkmate() === true ||
     game.in_draw() === true ||
@@ -227,46 +226,96 @@ var onDragStart = function(source, piece, position, orientation) {
   }
 };
 
-var makeBestMove = function() {
+var makeBestMove = function () {
   var bestMove = getBestMove(game);
-  game.ugly_move(bestMove);
-  board.position(game.fen());
-  renderMoveHistory(game.history());
+  if(bestMove){
+    game.ugly_move(bestMove);
+    board.position(game.fen());
+  }
+  renderMoveHistory(game.history({ verbose: true }));
   if (game.game_over()) {
-    alert("Game over");
+    ManageGameOver(game);
   }
 };
 
-var getBestMove = function(game) {
+var getBestMove = function (game) {
   if (game.game_over()) {
-    alert("Game over");
+    ManageGameOver(game);
     return 0;
   } else {
     var d = new Date().getTime();
     var bestMove = calculateBestMove(game);
     d = new Date().getTime() - d;
-    document.getElementById("last-time").innerText =
-      "Last adversary move took " + d / 1000 + "s";
+    document.getElementById("last-time").innerHTML =
+      "Last adversary move took <strong>" + d / 1000 + "s </strong>";
     return bestMove;
   }
 };
 
-var renderMoveHistory = function(moves) {
+function renderMoveHistory(verbosemoves,state) {
   var historyElement = $("#move-history");
   historyElement.empty();
-  for (var i = 0; i < moves.length; i = i + 2) {
-    historyElement.append(
-      "<span>" +
-        moves[i] +
-        " " +
-        (moves[i + 1] ? moves[i + 1] : " ") +
-        "</span><br>"
-    );
+  if (verbosemoves) {
+    for (var i = 0; i < verbosemoves.length; i++) {
+      let path = "pieces/alpha/"+verbosemoves[i].color+verbosemoves[i].piece.toUpperCase()+".png";
+      historyElement.append("<span class='alert alert-light float-"
+      +(verbosemoves[i].color=="w"?"right mr-2":"left")+"'>"+ 
+      "<img src='"+path+"' width='24' /> <strong>"+verbosemoves[i].from+"</strong> -> <strong>"
+      +verbosemoves[i].to
+      +"</strong></span><br>");
+    }
   }
+
+  if(state){
+    let color = (state=="w"?"success":(state=="l"?"danger":"warning"))
+    let side = (state=="w"?"right":"left")
+    console.log(historyElement)
+  historyElement.append("<span class='alert alert-"+color+" float-"+side+"'><strong>"
+  +(state=="w"?"You win!":(state=="l"?"You lose!":"It's a draw !"))
+  +"</strong></span><br>");
+  
+  console.log(historyElement)
+  }
+  
   historyElement.scrollTop(historyElement[0].scrollHeight);
 };
 
-var onDrop = function(source, target) {
+function ManageGameOver(game){
+  let messageTitle, messageContent,state;
+  if(game.in_checkmate()){
+    messageTitle = "Checkmate";
+    if(game.turn()=="w"){
+      state = "l";
+      messageContent = "You lose";
+    }else{
+      state = "w";
+      messageContent = "You win";
+    }
+  }else if(game.in_threefold_repetition()){
+    state = "d";
+    messageTitle = "It's a draw";
+    messageContent = "Threefold Repetition";
+  }else if(game.in_stalemate()){
+    state = "d";
+    messageTitle = "It's a draw";
+    messageContent = "Stalemate";
+  }else if(game.in_draw()){
+    state = "d";
+    messageTitle = "It's a draw";
+    messageContent = "";
+  }else{
+    alert("Game over");
+  }
+  renderMoveHistory(game.history({ verbose: true }),state);
+
+  $('#modal-title')[0].innerHTML = messageTitle;
+  $('#modal-message')[0].innerHTML = messageContent;
+  $('#GameOverModel').modal('toggle');
+
+
+}
+
+var onDrop = function (source, target) {
   var move = game.move({
     from: source,
     to: target,
@@ -274,19 +323,19 @@ var onDrop = function(source, target) {
   });
 
   removeGreySquares();
+  renderMoveHistory(game.history({ verbose: true }));
   if (move === null) {
     return "snapback";
   }
 
-  renderMoveHistory(game.history());
   window.setTimeout(makeBestMove, 250);
 };
 
-var onSnapEnd = function() {
+var onSnapEnd = function () {
   board.position(game.fen());
 };
 
-var onMouseoverSquare = function(square, piece) {
+var onMouseoverSquare = function (square, piece) {
   var moves = game.moves({
     square: square,
     verbose: true
@@ -301,15 +350,15 @@ var onMouseoverSquare = function(square, piece) {
   }
 };
 
-var onMouseoutSquare = function(square, piece) {
+var onMouseoutSquare = function (square, piece) {
   removeGreySquares();
 };
 
-var removeGreySquares = function() {
+var removeGreySquares = function () {
   $("#board .square-55d63").css("background", "");
 };
 
-var greySquare = function(square) {
+var greySquare = function (square) {
   var squareEl = $("#board .square-" + square);
 
   var background = "#19c2d3";
@@ -334,7 +383,7 @@ board = ChessBoard("board", cfg);
 
 $('#resetbtn').on('click', board.start);
 
-document.getElementById("resetbtn").addEventListener("click", function(){ 
+document.getElementById("resetbtn").addEventListener("click", function () {
   game = new Chess();
   $("#move-history").empty();
 });
