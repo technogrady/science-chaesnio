@@ -1,7 +1,6 @@
 var board,
   game = new Chess();
 
-/*The "AI" part starts here */
 
 var difficulties = [];
 var N = document.getElementById("AILevel").length;
@@ -61,7 +60,6 @@ function PosEvalMove(MoveList) {
     var newGameMove = MoveList[i];
     game.ugly_move(newGameMove);
 
-    //take the negative as AI plays as black
     var boardValue = -evaluateBoard(game.board());
     game.undo();
     if (boardValue > bestValue) {
