@@ -241,9 +241,12 @@ var getBestMove = function (game) {
     ManageGameOver(game);
     return 0;
   } else {
+    //$('#thinking-modal-message')[0].innerHTML = "Thinking";
+    //$('#ThinkingModel').modal('show');
     var d = new Date().getTime();
     var bestMove = calculateBestMove(game);
     d = new Date().getTime() - d;
+    //$('#ThinkingModel').modal('hide');
     document.getElementById("last-time").innerHTML =
       "Last adversary move took <strong>" + d / 1000 + "s </strong>";
     return bestMove;
